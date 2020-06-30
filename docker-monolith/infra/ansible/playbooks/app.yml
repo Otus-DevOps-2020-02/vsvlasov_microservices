@@ -1,0 +1,10 @@
+---
+- hosts: docker
+  become: yes
+  tasks:
+    - name: "Run docker container"
+      docker_container:
+        name: reddit
+        image: "vvlineate/otus-reddit:1.0"
+        ports:
+          - "9292:9292"

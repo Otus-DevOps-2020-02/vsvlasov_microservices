@@ -1,0 +1,13 @@
+plugin: gcp_compute
+projects:
+  - docker-280519
+auth_kind: serviceaccount
+service_account_file: credentials.json
+
+hostnames:
+  - name
+groups:
+  docker: inventory_hostname.startswith('docker-host')
+
+compose:
+  ansible_host: networkInterfaces[0].accessConfigs[0].natIP

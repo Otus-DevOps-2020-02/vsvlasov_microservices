@@ -1,0 +1,5 @@
+{
+  "project_id": "docker-######",
+  "source_image_family": "ubuntu-####-lts",
+  "image_description": "Docker host"
+}

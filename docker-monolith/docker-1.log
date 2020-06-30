@@ -1,0 +1,19 @@
+REPOSITORY                  TAG                 IMAGE ID            CREATED             SIZE
+vsvlasov/ubunutu-tmp-file   latest              51885ad0abc1        13 seconds ago      125MB
+docker_web-service          latest              22c99716e514        2 weeks ago         933MB
+<none>                      <none>              d74c47ab8e06        3 weeks ago         933MB
+ops_stream                  latest              dd82e7dcaca6        3 weeks ago         1.31GB
+postgres                    latest              adf2b126dda8        4 weeks ago         313MB
+ubuntu                      16.04               005d2078bdfa        7 weeks ago         125MB
+<none>                      <none>              d3d697a67fa4        2 months ago        933MB
+nginx                       latest              5a8dfb2ca731        2 months ago        127MB
+mysql                       5.7                 66371c06f4ca        2 months ago        456MB
+python                      3                   d47898c6f4b0        2 months ago        933MB
+hello-world                 latest              bf756fb1ae65        5 months ago        13.3kB
+python                      3.7.4-stretch       9c5a6f98cfe8        8 months ago        940MB
+python                      2.7.10              4442f7b981c4        4 years ago         675MB
+
+
+Отличие Image от Container
+Image - базовый образ, состоящий из read-only слоев, на основе которого билдятся контейнеры.
+Container - базовый образ с дополнительным read-write слоем, содержит различные конфиги и т.д.
