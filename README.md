@@ -65,3 +65,29 @@ docker run -d --network=reddit --network-alias=post_new --env POST_DATABASE_HOST
 docker run -d --network=reddit --network-alias=comment_new --env COMMENT_DATABASE_HOST=comment_db_new vvlineate/comment:1.0
 docker run -d --network=reddit -p 9292:9292 --env POST_SERVICE_HOST=post_new --env COMMENT_SERVICE_HOST=comment_new vvlineate/ui:2.0
 ```
+
+# ДЗ-14 "Docker: сети, docker-compose"
+
+### Работа с сетями
+
+1. `none` драйвер полностью изолирует докер контейнер от доступа к внешнему миру
+2. `host` При использовании данного типа драйвера убирается изоляция между контейнером и Docker host,
+что позволяет напрямую использовать сеть хоста
+3. `bridge` Используется при необходимости иметь в сети N контейнеров, которым нужно коммуницировать
+
+### Запуск нескольких контейнеров nginx `docker run --network host -d nginx`
+Одновременно может быть запущен только один контейнер, т.к. он занимает порт
+
+### Base project name
+Имя формируется `<project_name>_<service_name>_<index>`.
+
+По умолчанию в качестве `project_name` используется имя директории в которой находится yml файл.
+
+Может быть изменен с помощью переменной `COMPOSE_PROJECT_NAME`
+ или флага `-p, --project-name`
+
+### Docker-compose
+1. Добавлен параметризованный Docker compose конфиг с несколькими сетями
+2. Добавлен override для конфига
+ - Изменена команда запуска, добавлены флаги `--debug` `-w 2`
+ - Директории с кодом смонтированы как volume

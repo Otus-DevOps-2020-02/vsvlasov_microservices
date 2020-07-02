@@ -10,3 +10,4 @@ jdauphant.nginx
 .pytest_cache
 terraform.tfvars
 credentials.json
+.env
