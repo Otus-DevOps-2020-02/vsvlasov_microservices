@@ -116,3 +116,39 @@ docker run -d --network=reddit -p 9292:9292 --env POST_SERVICE_HOST=post_new --e
 4. Создать группу, проект
 
 5. Добавить код в проект на gitlab
+
+# ДЗ-16 Введение в мониторинг. Системы мониторинга.
+
+- Добавлен prometheus для мониторинга
+- Добавлены node-exporter, blackbox-exporter, mongodb-exporter для prometheus
+- Добавлен Makefile для сбокри и пуша образов в DockerHub
+- Образы запушены в DockerHub
+
+### Запуск проекта
+1. Создать GCP инстанс
+
+       export GOOGLE_PROJECT=<your_project>
+       docker-machine create --driver google \
+         --google-machine-image https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/family/ubuntu-1604-lts \
+         --google-machine-type n1-standard-1 \
+         --google-zone europe-west1-b \
+         docker-host
+
+2. Создать Firewall rules
+
+       gcloud compute firewall-rules create prometheus-default --allow tcp:9090
+       gcloud compute firewall-rules create puma-default --allow tcp:9292
+
+3. Собрать и запушить образы
+
+       make build_all
+       make docker_push_all
+
+4. Задеплоить приложение
+
+       cd docker
+       docker-compose -f docker-compose.yml up -d
+
+### Проверка работоспособности
+- Перейти по ссылке http://<YOUR_VM_IP>:9090
+- Перейти по ссылке http://<YOUR_VM_IP>:9292
