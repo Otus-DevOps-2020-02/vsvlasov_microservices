@@ -1,4 +1,7 @@
-image: ruby:2.4.2
+image: docker:latest
+
+services:
+    - docker:dind
 
 stages:
   - build
@@ -17,9 +20,7 @@ before_script:
 
 build_job:
   stage: build
-  image: docker:latest
-  services:
-    - docker:dind
+  image: ruby:2.4.2
   script:
     - docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
     - docker build -t ${DOCKER_LOGIN}/reddit-gitlab:${CI_COMMIT_SHORT_SHA} ./reddit
@@ -27,6 +28,7 @@ build_job:
 
 test_unit_job:
   stage: test
+  image: ruby:2.4.2
   services:
     - mongo:latest
   script:
