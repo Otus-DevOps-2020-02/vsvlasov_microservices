@@ -16,8 +16,15 @@ before_script:
 
 build_job:
   stage: build
+  image: docker:19.03.1
+  services:
+    - docker:19.03.1-dind
+  before_script:
+    - docker info
   script:
-    - echo 'Building'
+    - docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
+    - docker build -t ${DOCKER_LOGIN}/reddit-gitlab:${CI_COMMIT_SHORT_SHA} ./reddit
+    - docker push ${DOCKER_LOGIN}/reddit-gitlab:${CI_COMMIT_SHORT_SHA}
 
 test_unit_job:
   stage: test
