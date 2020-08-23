@@ -14,10 +14,6 @@ variables:
   DATABASE_URL: 'mongodb://mongo/user_posts'
   MOUNT_POINT: /builds/$CI_PROJECT_PATH/mnt
 
-before_script:
-  - cd reddit
-  - bundle install
-
 build_job:
   stage: build
   script:
@@ -28,6 +24,9 @@ build_job:
 test_unit_job:
   stage: test
   image: ruby:2.4.2
+  before_script:
+    - cd reddit
+    - bundle install
   services:
     - mongo:latest
   script:
