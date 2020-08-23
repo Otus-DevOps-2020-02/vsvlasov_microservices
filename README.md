@@ -91,3 +91,28 @@ docker run -d --network=reddit -p 9292:9292 --env POST_SERVICE_HOST=post_new --e
 2. Добавлен override для конфига
  - Изменена команда запуска, добавлены флаги `--debug` `-w 2`
  - Директории с кодом смонтированы как volume
+
+
+# ДЗ-15 Устройство Gitlab CI. Построение процесса непрерывной поставки
+1. Добавлен скрипт для создания инстанса GCP с помощью docker-machine
+2. Установлен GitLab с task runner'ами
+3. Добавлен pipeline для тестирования, сборки и запуска динамических окружений приложения
+
+### Установка GitLab
+1. Создать инстанс GCP
+
+       sh gitlab-ci/gitlab-gcp.sh
+
+2. Запустить GitLab
+
+       cd gitlab-ci
+       docker-compose up -d
+
+3. Зарегистрировать Task runner
+
+       cd gitlab-ci
+       sh runner.sh
+
+4. Создать группу, проект
+
+5. Добавить код в проект на gitlab
