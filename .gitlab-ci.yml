@@ -11,6 +11,7 @@ stages:
   - production
 
 variables:
+  DOCKER_HOST: tcp://docker:2375
   DATABASE_URL: 'mongodb://mongo/user_posts'
   MOUNT_POINT: /builds/$CI_PROJECT_PATH/mnt
   DOCKER_TLS_CERTDIR: ""
@@ -40,8 +41,6 @@ test_integration_job:
 
 branch review:
   stage: review
-  services:
-    - mongo:latest
   script:
     - echo "Deploy to $CI_ENVIRONMENT_SLUG"
     - docker network create reddit
