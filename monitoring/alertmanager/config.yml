@@ -1,0 +1,10 @@
+global:
+  slack_api_url: 'https://hooks.slack.com/services/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'
+
+route:
+  receiver: 'slack-notifications'
+
+receivers:
+- name: 'slack-notifications'
+  slack_configs:
+  - channel: '#vladimir_vlasov'
