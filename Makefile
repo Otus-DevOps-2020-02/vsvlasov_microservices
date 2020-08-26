@@ -21,6 +21,12 @@ build_post:
 push_post: docker_login
 	docker push ${USER_NAME}/post
 
+build_telegraf:
+	cd monitoring/telegraf && docker build -t ${USER_NAME}/telegraf .
+
+push_telegraf: docker_login
+	docker push ${USER_NAME}/telegraf
+
 build_prometheus:
 	cd monitoring/prometheus && docker build -t ${USER_NAME}/prometheus .
 
@@ -33,12 +39,12 @@ build_alertmanager:
 push_alertmanager: docker_login
 	docker push ${USER_NAME}/alertmanager
 
-build_all: build_ui build_comment build_post build_prometheus
+build_all: build_ui build_comment build_post build_prometheus build_telegraf build_alertmanager
 
 docker_login:
 	docker login
 
-docker_push_all: push_comment push_post push_prom push_ui
+docker_push_all: push_comment push_post push_prom push_ui push_telegraf push_alertmanager
 
 
 run_app:
