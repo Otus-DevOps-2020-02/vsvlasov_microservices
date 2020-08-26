@@ -18,7 +18,7 @@ services:
       - monitoring
 
   alertmanager:
-    image: ${USER_NAME}/alertmanager
+    image: ${USERNAME}/alertmanager
     command:
       - '--config.file=/etc/alertmanager/config.yml'
     ports:
@@ -82,7 +82,7 @@ services:
       - monitoring
 
   telegraf:
-    image: ${USER_NAME}/telegraf
+    image: ${USERNAME}/telegraf
     ports:
       - '9273:9273'
     volumes:
