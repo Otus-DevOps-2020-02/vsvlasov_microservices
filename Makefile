@@ -39,15 +39,21 @@ build_alertmanager:
 push_alertmanager: docker_login
 	docker push ${USER_NAME}/alertmanager
 
-build_all: build_ui build_comment build_post build_prometheus build_telegraf build_alertmanager
+build_fluentd:
+	cd logging/fluentd && docker build -t ${USER_NAME}/fluentd .
+
+push_fluentd: docker_login
+	docker push ${USER_NAME}/fluentd
+
+build_all: build_ui build_comment build_post build_prometheus build_telegraf build_alertmanager build_fluentd
 
 docker_login:
 	docker login
 
-docker_push_all: push_comment push_post push_prom push_ui push_telegraf push_alertmanager
+docker_push_all: push_comment push_post push_prom push_ui push_fluentd push_alertmanager push_telegraf
 
 
 run_app:
 	cd docker && \
 	docker-compose -f docker-compose.yml up -d && \
-	docker-compose -f docker-compose-monitoring.yml up -d
+	docker-compose -f docker-compose-logging.yml up -d
