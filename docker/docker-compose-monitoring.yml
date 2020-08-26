@@ -10,6 +10,8 @@ services:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
       - '--storage.tsdb.retention=1d'
+    extra_hosts:
+      - 'dockerhost:172.17.0.1'
     networks:
       - back_net
       - front_net
@@ -78,6 +80,17 @@ services:
       - 3000:3000
     networks:
       - monitoring
+
+  telegraf:
+    image: ${USER_NAME}/telegraf
+    ports:
+      - '9273:9273'
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'
+    networks:
+      - front_net
+      - back_net
+
 
 volumes:
   prometheus_data:

@@ -62,7 +62,12 @@ scrape_configs:
       - targets:
         - 'cadvisor:8080'
 
-  - job_name: 'telegraph'
+  - job_name: 'telegraf'
     static_configs:
       - targets:
         - 'telegraf:9273'
+
+  - job_name: 'docker'
+    static_configs:
+      - targets:
+        - 'dockerhost:9323'
