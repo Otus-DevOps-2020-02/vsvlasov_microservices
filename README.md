@@ -258,3 +258,19 @@ docker run -d --network=reddit -p 9292:9292 --env POST_SERVICE_HOST=post_new --e
 ### Проверка работоспособности
 - Провести Smoke test в соответствии с The Hard Way
 - `kubectl get po` должен показать поды reddit
+
+
+# ДЗ-19 Введение в Kubernetes
+- Развернут K8S кластер в GCP по [Hard Way](https://github.com/kelseyhightower/kubernetes-the-hard-way)
+- Добавлена [документация](./kubernetes/the_hard_way/README.md) со списком шагов и заметками при возникновении проблем
+- Сделан смоук тестинг
+- Задеплоены тестовые поды
+
+### Запуск проекта
+- Выполнить шаги из [Hard Way](https://github.com/kelseyhightower/kubernetes-the-hard-way)
+Решение возникших проблем описано в [документации](./kubernetes/the_hard_way/README.md)
+- Задеплоить поды reddit
+
+### Проверка работоспособности
+- Провести Smoke test в соответствии с The Hard Way
+- `kubectl get po` должен показать поды reddit
