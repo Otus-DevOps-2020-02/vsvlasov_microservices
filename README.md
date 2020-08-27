@@ -315,3 +315,41 @@ docker run -d --network=reddit -p 9292:9292 --env POST_SERVICE_HOST=post_new --e
 
         kubectl get nodes -o wide  # Взять external-ip
         kubectl describe service ui -n dev | grep NodePort   # Взять NodePort
+
+
+# ДЗ-21 Kubernetes. Networks ,Storages
+- Добавлен UI load balancer
+- Load balancer заменен на ingress контроллер
+- Добавлен TLS + k8s secret
+- Ограничен http доступ
+- Ограничен доступ к Mongo извне
+- Добавлены различные volumes для mongodb
+
+### Запуск проекта
+- Задеплоить GKE с использованием terraform
+
+      cd kubernetes/terraform
+      terraform init
+      terraform apply
+
+- Задеплоить namespace
+
+      cd kubernetes
+      kubectl apply -f ./reddit/dev-namespace.yml
+
+- Задеплоить приложение
+
+      cd kubernetes
+      kubectl apply -f ./reddit/. -n dev
+
+- Сгенерировать TLS сертификат
+
+      kubectl get ing -n dev  # Получить INGRESS_IP
+      openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout tls.key -out tls.crt -subj "/CN=<INGRESS_IP"  # Генерация ключа
+      Добавить сертификат и ключ в kubernetes/reddit/ui-ingress-secret.yml
+      kubectl apply -f kubernetes/reddit/ui-ingress-secret.yml -n dev  # Создать secret
+
+### Проверка работоспособности
+- Получить ingress ip `kubectl get ing ui -n dev`
+- Перейти по ссылке https://<INGRESS_IP>
+- `kubectl get svc -n dev` должен вернуть сервисы приложения
