@@ -152,3 +152,53 @@ docker run -d --network=reddit -p 9292:9292 --env POST_SERVICE_HOST=post_new --e
 ### Проверка работоспособности
 - Перейти по ссылке http://<YOUR_VM_IP>:9090
 - Перейти по ссылке http://<YOUR_VM_IP>:9292
+
+
+# ДЗ-17 Мониторинг приложения и инфраструктуры
+- Добавлен мониторинг cAdvisor
+- Добавлена Grafana для визуализации метрик с дашбордами
+- Добавлен сбор метрик с Docker
+- Добавлен сбор метрик telegraf
+- Добавлен алертинг в Slack
+
+### Запуск проекта
+1. Создать GCP инстанс
+
+       docker-machine create --driver google \
+          --google-machine-image https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/family/ubuntu-1604-lts \
+          --google-machine-type n1-standard-1 \
+          --google-zone europe-west1-b \
+          docker-host
+
+2. Создать Firewall rules
+
+       gcloud compute firewall-rules create prometheus-default --allow tcp:9090
+       gcloud compute firewall-rules create puma-default --allow tcp:9292
+       gcloud compute firewall-rules create grafana-default --allow tcp:3000
+       gcloud compute firewall-rules create cadvisor-default --allow tcp:8080
+
+3. Собрать и запушить образы
+
+       make build_all
+       make docker_push_all
+
+4. Задеплоить приложение
+
+       make run_app
+
+       или
+
+       cd ./docker
+       docker-compose -f docker-compose-monitoring.yml up -d
+       docker-compose -f docker-compose.yml up -d
+
+5. Импортировать дашборды Grafana
+
+       Перейти по ссылке http://<YOUR_VM_IP>:3000
+       Добавить Prometheus source
+       Импортировать дашборды с папки ./monitoring/grafana/dashboards
+
+### Проверка работоспособности
+- Перейти по ссылке http://<YOUR_VM_IP>:8080 и проверить, что cAdvisor собирает метрики
+- Перейти по ссылке http://<YOUR_VM_IP>:9090 и проверить, что в targets prometheus есть метрики с Docker, telegraf, etc.
+- Перейти по ссылке http://<YOUR_VM_IP>:3000 Проверить дашборды Grafana
