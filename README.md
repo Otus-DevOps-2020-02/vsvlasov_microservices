@@ -258,3 +258,60 @@ docker run -d --network=reddit -p 9292:9292 --env POST_SERVICE_HOST=post_new --e
 ### Проверка работоспособности
 - Провести Smoke test в соответствии с The Hard Way
 - `kubectl get po` должен показать поды reddit
+
+
+# ДЗ-19 Введение в Kubernetes
+- Развернут K8S кластер в GCP по [Hard Way](https://github.com/kelseyhightower/kubernetes-the-hard-way)
+- Добавлена [документация](./kubernetes/the_hard_way/README.md) со списком шагов и заметками при возникновении проблем
+- Сделан смоук тестинг
+- Задеплоены тестовые поды
+
+### Запуск проекта
+- Выполнить шаги из [Hard Way](https://github.com/kelseyhightower/kubernetes-the-hard-way)
+Решение возникших проблем описано в [документации](./kubernetes/the_hard_way/README.md)
+- Задеплоить поды reddit
+
+### Проверка работоспособности
+- Провести Smoke test в соответствии с The Hard Way
+- `kubectl get po` должен показать поды reddit
+
+
+# ДЗ-20 Kubernetes. Запуск кластера и приложения. Модель безопасности.
+- Добавлены поды для приложения
+- Настроена сеть, добавлены k8s сервисы
+- Добавлен Terraform
+- Добавлен RBAC для dashboard
+
+Скриншот приложения в GCP
+![Скриншот приложения в GCP](images/Screenshot_2020-08-27_12-54-21.png)
+
+
+### Запуск проекта
+- Задеплоить GKE с использованием terraform
+
+      cd kubernetes/terraform
+      terraform init
+      terraform apply
+
+- Задеплоить namespace
+
+      cd kubernetes
+      kubectl apply -f ./reddit/dev-namespace.yml
+
+- Задеплоить приложение
+
+      cd kubernetes
+      kubectl apply -f ./reddit/. -n dev
+
+- Задеплоить RBAC
+
+      cd kubernetes
+      kubectl apply -f ./dashboard/. -n dev
+
+### Проверка работоспособности
+- `kubectl get po -n dev` должен вернуть поды приложения
+- `kubectl get svc -n dev` должен вернуть сервисы приложения
+- Открыть UI приложения http://<external_ip>:<node_port>
+
+        kubectl get nodes -o wide  # Взять external-ip
+        kubectl describe service ui -n dev | grep NodePort   # Взять NodePort
