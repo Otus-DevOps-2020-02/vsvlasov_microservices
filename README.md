@@ -202,3 +202,43 @@ docker run -d --network=reddit -p 9292:9292 --env POST_SERVICE_HOST=post_new --e
 - Перейти по ссылке http://<YOUR_VM_IP>:8080 и проверить, что cAdvisor собирает метрики
 - Перейти по ссылке http://<YOUR_VM_IP>:9090 и проверить, что в targets prometheus есть метрики с Docker, telegraf, etc.
 - Перейти по ссылке http://<YOUR_VM_IP>:3000 Проверить дашборды Grafana
+
+
+# ДЗ-19 Логирование и распределенная трассировка
+- Добавлен EFK для сбора и визуализации логов
+- Добавлен Zipkin для трассировки
+- Добавлена обработка неструктурированных логов для UI сервиса
+- Проанализирован bugged-code с использованием Zipkin
+
+       Из трассировки видно, что db_find_single_post всегда занимает ~3 секунды.
+       Решение: Удалить time.sleep(3) из кода.
+
+1. Создать GCP инстанс
+
+       docker-machine create --driver google \
+           --google-machine-image https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/family/ubuntu-1604-lts \
+           --google-machine-type n1-standard-1 \
+           --google-open-port 5601/tcp \
+           --google-open-port 9292/tcp \
+           --google-open-port 9411/tcp \
+           logging
+
+2. Собрать и запушить образы
+
+       make build_all
+       make docker_push_all
+
+3. Задеплоить приложение
+
+       make run_app
+
+       или
+
+       cd ./docker
+       docker-compose -f docker-compose-logging.yml up -d
+       docker-compose -f docker-compose.yml up -d
+
+### Проверка работоспособности
+- Открыть приложение по ссылке http://<YOUR_VM_IP>:9292
+- Перейти по ссылке http://<YOUR_VM_IP>:5601 проверить работоспособность Kibana
+- Перейти по ссылке http://<YOUR_VM_IP>:9411 В Zipkin должна отображаться трассировка (В случае если ранее осуществлялся переход в приложение)
